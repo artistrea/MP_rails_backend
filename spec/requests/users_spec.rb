@@ -73,11 +73,15 @@ RSpec.describe 'Users', type: :request do
     end
   end
 
-  # describe 'DELETE /delete' do
-  #   it 'returns http success' do
-  #     user = create(:user)
-  #     delete "/users/delete/#{user.id}"
-  #     expect(response).to have_http_status(:success)
-  #   end
-  # end
+  describe 'DELETE /delete' do
+    it 'returns http success if valid id' do
+      delete "/users/delete/#{admin.id}", headers: admin_headers
+      expect(response).to have_http_status(:success)
+    end
+
+    it 'returns http bad_request if invalid id' do
+      delete "/users/delete/-1", headers: admin_headers
+      expect(response).to have_http_status(:bad_request)
+    end
+  end
 end
