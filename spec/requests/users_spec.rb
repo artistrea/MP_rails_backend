@@ -7,10 +7,10 @@ RSpec.describe 'Users', type: :request do
 
     it 'returns http success' do
       post '/users/create',
-        params: {
-          user: {email: 'teste@teste.com', password: '123456', user_type: 1}
-        },
-        headers: admin_headers
+           params: {
+             user: { email: 'teste@teste.com', password: '123456', user_type: 1 }
+           },
+           headers: admin_headers
 
       expect(response).to have_http_status(:success)
     end
