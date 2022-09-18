@@ -29,7 +29,18 @@ class UsersController < ApplicationController
     render json: { message: e }, status: :unauthorized
   end
 
-  # def delete; end
+  def delete
+    if current_user.user_type < 2
+      render json: { message: 'Não autorizado' }, status: :unauthorized
+      return
+    end
+
+    user = User.find(params[:id])
+    user.destroy!
+    render json: user, status: :ok
+  rescue StandardError => e
+    render json: { message: e }, status: :bad_request
+  end
 
   private
 
