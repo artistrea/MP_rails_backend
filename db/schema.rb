@@ -10,16 +10,33 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2022_09_18_155925) do
+ActiveRecord::Schema.define(version: 2022_09_18_162551) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
+
+  create_table "categories_users", id: false, force: :cascade do |t|
+    t.bigint "category_id", null: false
+    t.bigint "user_id", null: false
+    t.index ["category_id"], name: "index_categories_users_on_category_id"
+    t.index ["user_id"], name: "index_categories_users_on_user_id"
+  end
 
   create_table "clients", force: :cascade do |t|
     t.bigint "table_id", null: false
     t.datetime "created_at", precision: 6, null: false
     t.datetime "updated_at", precision: 6, null: false
     t.index ["table_id"], name: "index_clients_on_table_id"
+  end
+
+  create_table "orders", force: :cascade do |t|
+    t.bigint "user_id", null: false
+    t.bigint "client_id", null: false
+    t.integer "status"
+    t.datetime "created_at", precision: 6, null: false
+    t.datetime "updated_at", precision: 6, null: false
+    t.index ["client_id"], name: "index_orders_on_client_id"
+    t.index ["user_id"], name: "index_orders_on_user_id"
   end
 
   create_table "products", force: :cascade do |t|
@@ -54,4 +71,6 @@ ActiveRecord::Schema.define(version: 2022_09_18_155925) do
   end
 
   add_foreign_key "clients", "tables"
+  add_foreign_key "orders", "clients"
+  add_foreign_key "orders", "users"
 end
