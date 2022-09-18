@@ -17,7 +17,7 @@ RSpec.describe Product, type: :model do
     end
 
     it 'invalidates if empty description' do
-      product = build(:product, name: '')
+      product = build(:product, description: '')
       expect(product).not_to be_valid
     end
 
