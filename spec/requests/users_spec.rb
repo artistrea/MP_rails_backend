@@ -48,19 +48,27 @@ RSpec.describe 'Users', type: :request do
   end
 
   describe 'POST /login' do
-    it 'returns http success when valid credentials' do
-      post '/users/login', params: {email: admin.email, password: admin.password}
-      expect(response).to have_http_status(:success)
-      expect(JSON.parse(response.body)).to include("authentication_token", "user_type")
+    context 'when valid credentials' do
+      before do
+        post '/users/login', params: { email: admin.email, password: admin.password }
+      end
+
+      it 'returns http success when valid credentials' do
+        expect(response).to have_http_status(:success)
+      end
+
+      it 'returns authentication_token and user_type in response body' do
+        expect(JSON.parse(response.body)).to include('authentication_token', 'user_type')
+      end
     end
 
     it 'returns unauthorized when invalid password' do
-      post '/users/login', params: {email: admin.email, password: "a123a"}
+      post '/users/login', params: { email: admin.email, password: 'a123a' }
       expect(response).to have_http_status(:unauthorized)
     end
 
     it 'returns unauthorized when invalid email' do
-      post '/users/login', params: {email: "admin.email", password: admin.password}
+      post '/users/login', params: { email: 'admin.email', password: admin.password }
       expect(response).to have_http_status(:unauthorized)
     end
   end
