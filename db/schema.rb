@@ -15,13 +15,6 @@ ActiveRecord::Schema.define(version: 2022_09_18_162551) do
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
 
-  create_table "categories_users", id: false, force: :cascade do |t|
-    t.bigint "category_id", null: false
-    t.bigint "user_id", null: false
-    t.index ["category_id"], name: "index_categories_users_on_category_id"
-    t.index ["user_id"], name: "index_categories_users_on_user_id"
-  end
-
   create_table "clients", force: :cascade do |t|
     t.bigint "table_id", null: false
     t.datetime "created_at", precision: 6, null: false
@@ -37,6 +30,13 @@ ActiveRecord::Schema.define(version: 2022_09_18_162551) do
     t.datetime "updated_at", precision: 6, null: false
     t.index ["client_id"], name: "index_orders_on_client_id"
     t.index ["user_id"], name: "index_orders_on_user_id"
+  end
+
+  create_table "orders_products", id: false, force: :cascade do |t|
+    t.bigint "product_id", null: false
+    t.bigint "order_id", null: false
+    t.index ["order_id"], name: "index_orders_products_on_order_id"
+    t.index ["product_id"], name: "index_orders_products_on_product_id"
   end
 
   create_table "products", force: :cascade do |t|
