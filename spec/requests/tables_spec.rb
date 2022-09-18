@@ -30,4 +30,24 @@ RSpec.describe 'Tables', type: :request do
       expect(response).to have_http_status(:unauthorized)
     end
   end
+
+  describe 'DELETE /delete' do
+    it 'returns http success if valid id' do
+      table = create(:table)
+      delete "/tables/delete/#{table.id}", headers: admin_headers
+      expect(response).to have_http_status(:success)
+    end
+
+    it 'returns http bad_request if invalid id' do
+      delete '/tables/delete/-1', headers: admin_headers
+      expect(response).to have_http_status(:bad_request)
+    end
+  end
+
+  describe 'GET /index' do
+    it 'returns http success' do
+      get '/tables/index', headers: cook_headers
+      expect(response).to have_http_status(:success)
+    end
+  end
 end
