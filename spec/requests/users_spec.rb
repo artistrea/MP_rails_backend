@@ -1,11 +1,11 @@
 RSpec.describe 'Users', type: :request do
+  let(:admin) { create(:user, user_type: 2) }
+  let(:cook) { create(:user, user_type: 0) }
+
+  let(:admin_headers) { { 'X-User-Token': admin.authentication_token, 'X-User-Email': admin.email } }
+  let(:cook_headers) { { 'X-User-Token': cook.authentication_token, 'X-User-Email': cook.email } }
+
   describe 'POST /create' do
-    let(:admin) { create(:user, user_type: 2) }
-    let(:cook) { create(:user, user_type: 0) }
-
-    let(:admin_headers) { { 'X-User-Token': admin.authentication_token, 'X-User-Email': admin.email } }
-    let(:cook_headers) { { 'X-User-Token': cook.authentication_token, 'X-User-Email': cook.email } }
-
     valid_user_params = { email: 'teste@teste.com', password: '123456', user_type: 1 }
     invalid_user_params = { email: 'teste@teste.com', password: '12345', user_type: 1 }
 
@@ -40,19 +40,30 @@ RSpec.describe 'Users', type: :request do
     end
   end
 
-  # describe 'GET /index' do
-  #   it 'returns http success' do
-  #     get '/users/index'
-  #     expect(response).to have_http_status(:success)
-  #   end
-  # end
+  describe 'GET /index' do
+    it 'returns http success' do
+      get '/users/index', headers: cook_headers
+      expect(response).to have_http_status(:success)
+    end
+  end
 
-  # describe 'POST /login' do
-  #   it 'returns http success' do
-  #     post '/users/login', params: { email: 'teste@teste.com', password: '123456' }
-  #     expect(response).to have_http_status(:success)
-  #   end
-  # end
+  describe 'POST /login' do
+    it 'returns http success when valid credentials' do
+      post '/users/login', params: {email: admin.email, password: admin.password}
+      expect(response).to have_http_status(:success)
+      expect(JSON.parse(response.body)).to include("authentication_token", "user_type")
+    end
+
+    it 'returns unauthorized when invalid password' do
+      post '/users/login', params: {email: admin.email, password: "a123a"}
+      expect(response).to have_http_status(:unauthorized)
+    end
+
+    it 'returns unauthorized when invalid email' do
+      post '/users/login', params: {email: "admin.email", password: admin.password}
+      expect(response).to have_http_status(:unauthorized)
+    end
+  end
 
   # describe 'DELETE /delete' do
   #   it 'returns http success' do
