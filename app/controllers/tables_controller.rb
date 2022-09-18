@@ -2,7 +2,7 @@ class TablesController < ApplicationController
   acts_as_token_authentication_handler_for User
 
   def index
-    tables = Tables.all
+    tables = Table.all
     render json: tables, status: :ok
   end
 
@@ -11,11 +11,10 @@ class TablesController < ApplicationController
       render json: { message: 'Não autorizado' }, status: :unauthorized
       return
     end
-    tables = Table.create!(table_params)
+    table = Table.create!(table_params)
 
-    render json: tables, status: :created
+    render json: table, status: :created
   rescue StandardError => e
-    Rails.logger.debug e
     render json: { message: e }, status: :bad_request
   end
 
@@ -24,8 +23,10 @@ class TablesController < ApplicationController
       render json: { message: 'Não autorizado' }, status: :unauthorized
       return
     end
+
     table = Table.find(params[:id])
-    table.destroy!
+    table.delete
+
     render json: table, status: :ok
   rescue StandardError => e
     render json: { message: e }, status: :bad_request
