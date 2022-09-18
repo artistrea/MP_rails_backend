@@ -1,0 +1,48 @@
+require:
+  - rubocop-rails
+  - rubocop-rspec
+
+  
+AllCops:
+  TargetRubyVersion: 2.7.4
+  NewCops: enable
+  Exclude:
+    - db/schema.rb
+    - bin/bundle
+    - db/migrate/*
+    - config/initializers/*
+    - config/environments/development.rb
+    - spec/rails_helper.rb
+    - 'vendor/**/*'
+    - lib/CustomFailure.rb
+    - config/routes.rb
+
+
+
+# Desabilitar o Cop de documentação com comentário.
+Style/Documentation:
+  Enabled: false
+
+#  O Cop de strings literais imutáveis parece introduzir uma feature que não é
+# utilizada com frequência em Rails e que possui pouca aplicação no momento.
+Style/FrozenStringLiteralComment:
+  Enabled: false
+
+Metrics/MethodLength:
+  Max: 25
+
+Metrics/ClassLength:
+  Max: 200
+
+Metrics/AbcSize:
+  Max: 35
+
+Metrics/CyclomaticComplexity:
+  Max: 10
+
+RSpec/ExampleLength:
+  Max: 8
+
+
+Metrics/BlockLength:
+  IgnoredMethods: ["describe", "context"]
