@@ -13,10 +13,21 @@ class UsersController < ApplicationController
   end
 
   def index
-  
+    users = User.all
+    render json: users, status: :ok
   end
 
-  # def login; end
+  def login
+    user = User.find_by!(email: params[:email])
+
+    if user.valid_password?(params[:password])
+      render json: user, status: :ok
+    else
+      head(:unauthorized)
+    end
+  rescue StandardError => e
+    render json: { message: e }, status: :unauthorized
+  end
 
   # def delete; end
 
