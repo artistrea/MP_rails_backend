@@ -18,11 +18,19 @@ Rails.application.routes.draw do
     delete '/delete/:id', to: 'tables#delete'
   end
 
-  # For staff to manage clients using tables
+  # For staff to manage clients using tables.
   scope "clients" do
     post '/create', to: 'clients#create'
     get '/index', to: 'clients#index'
     get '/bill', to: 'clients#bill' # Still not made
+  end
+
+  scope "products" do
+    post '/create', to: 'products#create'
+    patch '/update', to: 'products#update'
+    get '/index', to: 'products#index'
+    get '/show', to: 'products#show'
+    delete '/delete', to: 'products#delete'
   end
 
   # For details on the DSL available within this file, see https://guides.rubyonrails.org/routing.html
