@@ -80,7 +80,7 @@ RSpec.describe 'Users', type: :request do
     end
 
     it 'returns http bad_request if invalid id' do
-      delete "/users/delete/-1", headers: admin_headers
+      delete '/users/delete/-1', headers: admin_headers
       expect(response).to have_http_status(:bad_request)
     end
   end
