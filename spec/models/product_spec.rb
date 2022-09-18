@@ -43,4 +43,12 @@ RSpec.describe Product, type: :model do
       expect(product).not_to be_valid
     end
   end
+
+  context 'when using repeated value for unique column' do
+    it 'should not validate repeated name' do
+      create(:product)
+      product = build(:product)
+      expect(product).not_to be_valid
+    end
+  end
 end
