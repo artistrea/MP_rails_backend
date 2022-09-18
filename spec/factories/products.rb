@@ -1,8 +1,8 @@
 FactoryBot.define do
   factory :product do
-    name { "MyString" }
-    description { "MyString" }
-    quantity_in_stock { "" }
-    prep_time_in_minutes { "" }
+    name { "Produto" }
+    description { "Desc qualquer" }
+    quantity_in_stock { 0 }
+    prep_time_in_minutes { 10 }
   end
 end
