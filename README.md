@@ -3,22 +3,31 @@
 This README would normally document whatever steps are necessary to get the
 application up and running.
 
-Things you may want to cover:
+dbdiagram: https://dbdiagram.io/d/630fa9240911f91ba50abdef
 
-* Ruby version
+Iniciar:
 
-* System dependencies
+- bundle install
+- rails db:create
+- rails db:migrate
+- rails db:seed
 
-* Configuration
+Antes do push, lembre sempre de rodar os testes e linter:
 
-* Database creation
+- rspec spec
+- rubocop -A
 
-* Database initialization
+Versão do ruby: 2.7.4
 
-* How to run the test suite
+Versão do rails: 6.1.5
 
-* Services (job queues, cache servers, search engines, etc.)
+Banco de dados: postgresql
 
-* Deployment instructions
+Porta do server: 3333
 
-* ...
+Variáveis utilizadas em /config/application.yml (figaro):
+
+Pro banco de dados:
+
+- db_user
+- db_password
