@@ -9,10 +9,10 @@ RSpec.describe Table, type: :model do
   end
 
   context 'when using repeated number' do
-    it 'should not be valid' do
+    it 'is not valid' do
       create(:table)
       table = build(:table)
-      expect(table).to_not be_valid
+      expect(table).not_to be_valid
     end
   end
 end

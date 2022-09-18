@@ -1,3 +1,3 @@
 class Table < ApplicationRecord
-    validates :number, uniqueness: true
+  validates :number, uniqueness: true
 end
