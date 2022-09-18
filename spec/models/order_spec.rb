@@ -7,4 +7,21 @@ RSpec.describe Order, type: :model do
       expect(order).to be_valid
     end
   end
+
+  context 'when using empty property' do
+    it 'invalidates if no user' do
+      order = build(:order, user: nil)
+      expect(order).to_not be_valid
+    end
+
+    it 'invalidates if no client' do
+      order = build(:order, client: nil)
+      expect(order).to_not be_valid
+    end
+
+    it 'invalidates if empty products' do
+      order = build(:order, products: [])
+      expect(order).to_not be_valid
+    end
+  end
 end
