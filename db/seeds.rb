@@ -10,7 +10,9 @@ require 'faker'
 #   movies = Movie.create([{ name: 'Star Wars' }, { name: 'Lord of the Rings' }])
 #   Character.create(name: 'Luke', movie: movies.first)
 
-User.create(email: 'admin@mail.com', password: '123456', user_type: 2)
+admin = User.create(email: 'admin@mail.com', password: '123456', user_type: 2)
+table = Table.create( number: 1 )
+client = Client.create( table_id: 1 )
 
 
 (0...4).each do |n|
@@ -19,4 +21,12 @@ User.create(email: 'admin@mail.com', password: '123456', user_type: 2)
         quantity_in_stock: n,prep_time_in_minutes: n
     )
 end
+
+
+Order.create(
+    user_id: admin.id,
+    client_id: client.id,
+    product_ids: [1, 2],
+    status: 1
+)
 
