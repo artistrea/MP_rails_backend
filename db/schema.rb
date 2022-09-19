@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2022_09_19_135458) do
+ActiveRecord::Schema.define(version: 2022_09_19_141303) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -46,7 +46,7 @@ ActiveRecord::Schema.define(version: 2022_09_19_135458) do
     t.integer "prep_time_in_minutes"
     t.datetime "created_at", precision: 6, null: false
     t.datetime "updated_at", precision: 6, null: false
-    t.decimal "price_in_cents"
+    t.integer "price_in_cents"
     t.index ["name"], name: "index_products_on_name", unique: true
   end
 

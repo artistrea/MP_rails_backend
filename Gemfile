@@ -55,3 +55,6 @@ gem 'simple_token_authentication', '~> 1.0'
 
 # JSON manipulation
 gem 'active_model_serializers'
+
+# fake data for model seed
+gem 'faker', :git => 'https://github.com/faker-ruby/faker.git', :branch => 'master'
