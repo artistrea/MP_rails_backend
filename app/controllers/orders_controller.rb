@@ -1,8 +1,8 @@
 class OrdersController < ApplicationController
-    acts_as_token_authentication_handler_for User, except: %i[show index]
+  acts_as_token_authentication_handler_for User, except: %i[show index index_consult]
 
   def index
-    orders = Order.all
+    orders = Order.all.order(created_at: :asc)
     render json: orders, status: :ok
   end
 
@@ -11,6 +11,13 @@ class OrdersController < ApplicationController
     render json: order, status: :ok
   rescue StandardError
     head(:not_found)
+  end
+
+  def index_consult
+    orders = Order.where(status: params[:status]).order(created_at: :asc)
+    render json: orders, status: :ok
+  rescue StandardError
+    head(:bad_request)
   end
 
   def create

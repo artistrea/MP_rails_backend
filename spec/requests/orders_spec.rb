@@ -1,14 +1,13 @@
 require 'rails_helper'
 
-RSpec.describe "Orders", type: :request do
+RSpec.describe 'Orders', type: :request do
   let(:admin) { create(:user, user_type: 2) }
   let(:cook) { create(:user, user_type: 0) }
-  let(:waiter) { create(:user, user_type: 1)}
+  let(:waiter) { create(:user, user_type: 1) }
   # let(:product) { create(:product) }
 
   let(:admin_headers) { { 'X-User-Token': admin.authentication_token, 'X-User-Email': admin.email } }
   let(:cook_headers) { { 'X-User-Token': cook.authentication_token, 'X-User-Email': cook.email } }
-
 
   describe 'GET /index' do
     before do
@@ -20,7 +19,7 @@ RSpec.describe "Orders", type: :request do
     it 'returns http success' do
       expect(response).to have_http_status(:success)
     end
-    
+
     it 'returns 2 orders' do
       expect(JSON.parse(response.body).size).to eq(2)
     end
@@ -38,7 +37,7 @@ RSpec.describe "Orders", type: :request do
     end
 
     context 'when order does not exists' do
-      before { get "/orders/show/-1" }
+      before { get '/orders/show/-1' }
 
       it 'returns http not_found' do
         expect(response).to have_http_status(:not_found)
@@ -46,12 +45,29 @@ RSpec.describe "Orders", type: :request do
     end
   end
 
+  describe 'GET /index_consult' do
+    before do
+      create(:order)
+      create(:order)
+      create(:order, status: 2)
+      get '/orders/index_consult/1'
+    end
+
+    it 'returns http success' do
+      expect(response).to have_http_status(:success)
+    end
+
+    it 'returns 2 orders' do
+      expect(JSON.parse(response.body).size).to eq(2)
+    end
+  end
+
   describe 'POST /create' do
     let(:valid_params) do
       {
-        user_id: create(:user).id ,
-        client_id: create(:client).id ,
-        product_ids: [ create(:product).id ],
+        user_id: create(:user).id,
+        client_id: create(:client).id,
+        product_ids: [create(:product).id],
         status: 1
       }
     end
@@ -65,43 +81,43 @@ RSpec.describe "Orders", type: :request do
       }
     end
 
-    it "returns http success when admin uses valid params" do
-      post "/orders/create",
-      params: {
-        order: valid_params
-      },
-      headers: admin_headers
-      
+    it 'returns http success when admin uses valid params' do
+      post '/orders/create',
+           params: {
+             order: valid_params
+           },
+           headers: admin_headers
+
       expect(response).to have_http_status(:success)
     end
 
-    it "returns http unprocessable_entity when admin uses invalid params" do
-      post "/orders/create",
-      params: {
-        order: invalid_params
-      },
-      headers: admin_headers
-      
+    it 'returns http unprocessable_entity when admin uses invalid params' do
+      post '/orders/create',
+           params: {
+             order: invalid_params
+           },
+           headers: admin_headers
+
       expect(response).to have_http_status(:unprocessable_entity)
     end
 
-    it "returns http created when cook uses valid params" do
-      post "/orders/create",
-      params: {
-        order: valid_params
-      },
-      headers: cook_headers
-      
+    it 'returns http created when cook uses valid params' do
+      post '/orders/create',
+           params: {
+             order: valid_params
+           },
+           headers: cook_headers
+
       expect(response).to have_http_status(:created)
     end
 
-    it "returns http unprocessable_entity when cook uses invalid params" do
-      post "/orders/create",
-      params: {
-        order: invalid_params
-      },
-      headers: cook_headers
-      
+    it 'returns http unprocessable_entity when cook uses invalid params' do
+      post '/orders/create',
+           params: {
+             order: invalid_params
+           },
+           headers: cook_headers
+
       expect(response).to have_http_status(:unprocessable_entity)
     end
   end
@@ -118,44 +134,44 @@ RSpec.describe "Orders", type: :request do
       }
     end
     let(:order) { create(:order) }
-    
-    it "returns http success when admin uses valid params" do
+
+    it 'returns http success when admin uses valid params' do
       patch "/orders/update/#{order.id}",
-      params: {
-        order: valid_params
-      },
-      headers: admin_headers
-      
+            params: {
+              order: valid_params
+            },
+            headers: admin_headers
+
       expect(response).to have_http_status(:success)
     end
 
-    it "returns http unprocessable_entity when admin uses invalid params" do
+    it 'returns http unprocessable_entity when admin uses invalid params' do
       patch "/orders/update/#{order.id}",
-      params: {
-        order: invalid_params
-      },
-      headers: admin_headers
-      
+            params: {
+              order: invalid_params
+            },
+            headers: admin_headers
+
       expect(response).to have_http_status(:unprocessable_entity)
     end
 
-    it "returns http bad_request when admin updates unexisting order" do
-      patch "/orders/update/-1",
-      params: {
-        order: valid_params
-      },
-      headers: admin_headers
-      
+    it 'returns http bad_request when admin updates unexisting order' do
+      patch '/orders/update/-1',
+            params: {
+              order: valid_params
+            },
+            headers: admin_headers
+
       expect(response).to have_http_status(:not_found)
     end
 
-    it "returns http success when cook uses valid params" do
+    it 'returns http success when cook uses valid params' do
       patch "/orders/update/#{order.id}",
-      params: {
-        order: valid_params
-      },
-      headers: cook_headers
-      
+            params: {
+              order: valid_params
+            },
+            headers: cook_headers
+
       expect(response).to have_http_status(:success)
     end
   end

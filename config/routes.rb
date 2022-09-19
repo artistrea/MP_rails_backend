@@ -39,6 +39,7 @@ Rails.application.routes.draw do
     patch '/update/:id', to: 'orders#update'
     delete '/delete/:id', to: 'orders#delete'
     post '/create', to: 'orders#create'
+    get '/index_consult/:status', to: 'orders#index_consult'
   end
 
   # For details on the DSL available within this file, see https://guides.rubyonrails.org/routing.html
