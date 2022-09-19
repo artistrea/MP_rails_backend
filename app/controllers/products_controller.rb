@@ -1,54 +1,52 @@
 class ProductsController < ApplicationController
     acts_as_token_authentication_handler_for User, except: %i[show index]
 
-      def index
+    def index
         products = Product.all
         render json: products, status: :ok
-      end
+    end
 
-      def show
+    def show
         product = Product.find(params[:id])
         render json: product, status: :ok
-      rescue StandardError
+    rescue StandardError
         head(:not_found)
-      end
+    end
 
-      def create
+    def create
         product = Product.create(product_params)
         product.save!
         render json: product, status: :created
-      rescue StandardError
+    rescue StandardError
         head(:unprocessable_entity)
-      end
+    end
 
-      def update
+    def update
         product = Product.find(params[:id])
         product.update!(product_params)
         render json: product, status: :ok
-      rescue ActiveModel::ValidationError, ActiveRecord::RecordInvalid
+    rescue ActiveModel::ValidationError, ActiveRecord::RecordInvalid
         head(:unprocessable_entity)
-      rescue ActiveRecord::RecordNotFound
+    rescue ActiveRecord::RecordNotFound
         head(:not_found)
-      end
+    end
 
-      def delete
+    def delete
         product = Product.find(params[:id])
         product.destroy!
         render json: product, status: :ok
-      rescue StandardError
+    rescue StandardError
         head(:not_found)
-      end
-
-      private
-
-      def product_params
-        params.require(:product).permit(
-          :name,
-          :description,
-          :quantity_in_stock,
-          :prep_time_in_minutes
-        )
-      end
     end
-  end
+
+    private
+
+    def product_params
+        params.require(:product).permit(
+        :name,
+        :description,
+        :quantity_in_stock,
+        :prep_time_in_minutes
+        )
+    end
 end

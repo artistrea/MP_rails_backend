@@ -36,10 +36,7 @@ RSpec.describe "Products", type: :request do
     end
 
     context 'when product does not exists' do
-      before do
-        product.destroy!
-        get "/products/show/#{product.id}"
-      end
+      before { get "/products/show/-1" }
 
       it 'returns http not_found' do
         expect(response).to have_http_status(:not_found)
@@ -75,28 +72,38 @@ RSpec.describe "Products", type: :request do
       expect(response).to have_http_status(:success)
     end
 
-    it "returns http bad_request when admin uses invalid params" do
+    it "returns http unprocessable_entity when admin uses invalid params" do
       post "/products/create",
       params: {
         product: invalid_params
       },
       headers: admin_headers
       
-      expect(response).to have_http_status(:bad_request)
+      expect(response).to have_http_status(:unprocessable_entity)
     end
 
-    it "returns http unauthorized when cook uses valid params" do
+    it "returns http created when cook uses valid params" do
       post "/products/create",
       params: {
         product: valid_params
       },
       headers: cook_headers
       
-      expect(response).to have_http_status(:unauthorized)
+      expect(response).to have_http_status(:created)
+    end
+
+    it "returns http unprocessable_entity when cook uses invalid params" do
+      post "/products/create",
+      params: {
+        product: invalid_params
+      },
+      headers: cook_headers
+      
+      expect(response).to have_http_status(:unprocessable_entity)
     end
   end
 
-  describe 'PUT /update' do
+  describe 'PATCH /update' do
     let(:valid_params) do
       {
         quantity_in_stock: 40
@@ -104,13 +111,13 @@ RSpec.describe "Products", type: :request do
     end
     let(:invalid_params) do
       {
-        prep_time_in_minutes: 0
+        name: ""
       }
     end
     let(:product) { create(:product) }
     
     it "returns http success when admin uses valid params" do
-      post "/products/update/#{product.id}",
+      patch "/products/update/#{product.id}",
       params: {
         product: valid_params
       },
@@ -119,34 +126,34 @@ RSpec.describe "Products", type: :request do
       expect(response).to have_http_status(:success)
     end
 
-    it "returns http bad_request when admin uses invalid params" do
-      post "/products/update/#{product.id}",
+    it "returns http unprocessable_entity when admin uses invalid params" do
+      patch "/products/update/#{product.id}",
       params: {
         product: invalid_params
       },
       headers: admin_headers
       
-      expect(response).to have_http_status(:bad_request)
+      expect(response).to have_http_status(:unprocessable_entity)
     end
 
     it "returns http bad_request when admin updates unexisting product" do
-      post "/products/update/-1",
+      patch "/products/update/-1",
       params: {
         product: valid_params
       },
       headers: admin_headers
       
-      expect(response).to have_http_status(:bad_request)
+      expect(response).to have_http_status(:not_found)
     end
 
-    it "returns http unauthorized when cook uses valid params" do
-      post "/products/update/#{product.id}",
+    it "returns http success when cook uses valid params" do
+      patch "/products/update/#{product.id}",
       params: {
         product: valid_params
       },
       headers: cook_headers
       
-      expect(response).to have_http_status(:unauthorized)
+      expect(response).to have_http_status(:success)
     end
   end
 
@@ -154,13 +161,13 @@ RSpec.describe "Products", type: :request do
     let(:product) { create(:product) }
 
     it 'returns http success if valid id' do
-      delete "/product/delete/#{product.id}", headers: admin_headers
+      delete "/products/delete/#{product.id}", headers: admin_headers
       expect(response).to have_http_status(:success)
     end
 
-    it 'returns http bad_request if invalid id' do
-      delete '/product/delete/-1', headers: admin_headers
-      expect(response).to have_http_status(:bad_request)
+    it 'returns http not_found if invalid id' do
+      delete '/products/delete/-1', headers: admin_headers
+      expect(response).to have_http_status(:not_found)
     end
   end
 end

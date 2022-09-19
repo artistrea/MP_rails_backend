@@ -27,10 +27,10 @@ Rails.application.routes.draw do
 
   scope "products" do
     post '/create', to: 'products#create'
-    patch '/update', to: 'products#update'
+    patch '/update/:id', to: 'products#update'
     get '/index', to: 'products#index'
-    get '/show', to: 'products#show'
-    delete '/delete', to: 'products#delete'
+    get '/show/:id', to: 'products#show'
+    delete '/delete/:id', to: 'products#delete'
   end
 
   # For details on the DSL available within this file, see https://guides.rubyonrails.org/routing.html
