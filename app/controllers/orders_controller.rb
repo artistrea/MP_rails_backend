@@ -13,13 +13,13 @@ class OrdersController < ApplicationController
     head(:not_found)
   end
 
-#   def create
-#     order = Order.create(order_params)
-#     order.save!
-#     render json: order, status: :created
-#   rescue StandardError
-#     head(:unprocessable_entity)
-#   end
+  def create
+    order = Order.create(order_params)
+    order.save!
+    render json: order, status: :created
+  rescue StandardError => e
+    head(:unprocessable_entity)
+  end
 
   def update
     order = Order.find(params[:id])
@@ -45,8 +45,8 @@ class OrdersController < ApplicationController
     params.require(:order).permit(
       :client_id,
       :user_id,
-      :products,
-      :status
+      :status,
+      product_ids: []
     )
   end
 end

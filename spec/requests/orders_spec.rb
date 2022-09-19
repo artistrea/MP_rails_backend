@@ -3,6 +3,8 @@ require 'rails_helper'
 RSpec.describe "Orders", type: :request do
   let(:admin) { create(:user, user_type: 2) }
   let(:cook) { create(:user, user_type: 0) }
+  let(:waiter) { create(:user, user_type: 1)}
+  # let(:product) { create(:product) }
 
   let(:admin_headers) { { 'X-User-Token': admin.authentication_token, 'X-User-Email': admin.email } }
   let(:cook_headers) { { 'X-User-Token': cook.authentication_token, 'X-User-Email': cook.email } }
@@ -44,55 +46,65 @@ RSpec.describe "Orders", type: :request do
     end
   end
 
-  # describe 'POST /create' do
-  #   let(:valid_params) do
-  #     {
-  #       user_id: { create(:user).id },
-  #       client_id: { create(:client).id },
-  #       products: []
-  #     }
-  #   end
+  describe 'POST /create' do
+    let(:valid_params) do
+      {
+        user_id: create(:user).id ,
+        client_id: create(:client).id ,
+        product_ids: [ create(:product).id ],
+        status: 1
+      }
+    end
 
-  #   it "returns http success when admin uses valid params" do
-  #     post "/orders/create",
-  #     params: {
-  #       order: valid_params
-  #     },
-  #     headers: admin_headers
-      
-  #     expect(response).to have_http_status(:success)
-  #   end
+    let(:invalid_params) do
+      {
+        user_id: -1,
+        client_id: -1,
+        products: [],
+        status: 0
+      }
+    end
 
-  #   it "returns http unprocessable_entity when admin uses invalid params" do
-  #     post "/orders/create",
-  #     params: {
-  #       order: invalid_params
-  #     },
-  #     headers: admin_headers
+    it "returns http success when admin uses valid params" do
+      post "/orders/create",
+      params: {
+        order: valid_params
+      },
+      headers: admin_headers
       
-  #     expect(response).to have_http_status(:unprocessable_entity)
-  #   end
+      expect(response).to have_http_status(:success)
+    end
 
-  #   it "returns http created when cook uses valid params" do
-  #     post "/orders/create",
-  #     params: {
-  #       order: valid_params
-  #     },
-  #     headers: cook_headers
+    it "returns http unprocessable_entity when admin uses invalid params" do
+      post "/orders/create",
+      params: {
+        order: invalid_params
+      },
+      headers: admin_headers
       
-  #     expect(response).to have_http_status(:created)
-  #   end
+      expect(response).to have_http_status(:unprocessable_entity)
+    end
 
-  #   it "returns http unprocessable_entity when cook uses invalid params" do
-  #     post "/orders/create",
-  #     params: {
-  #       order: invalid_params
-  #     },
-  #     headers: cook_headers
+    it "returns http created when cook uses valid params" do
+      post "/orders/create",
+      params: {
+        order: valid_params
+      },
+      headers: cook_headers
       
-  #     expect(response).to have_http_status(:unprocessable_entity)
-  #   end
-  # end
+      expect(response).to have_http_status(:created)
+    end
+
+    it "returns http unprocessable_entity when cook uses invalid params" do
+      post "/orders/create",
+      params: {
+        order: invalid_params
+      },
+      headers: cook_headers
+      
+      expect(response).to have_http_status(:unprocessable_entity)
+    end
+  end
 
   describe 'PATCH /update' do
     let(:valid_params) do
