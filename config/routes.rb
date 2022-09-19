@@ -33,5 +33,12 @@ Rails.application.routes.draw do
     delete '/delete/:id', to: 'products#delete'
   end
 
+  scope "orders" do
+    get '/index', to: 'orders#index'
+    get '/show/:id', to: 'orders#show'
+    patch '/update/:id', to: 'orders#update'
+    delete '/delete/:id', to: 'orders#delete'
+  end
+
   # For details on the DSL available within this file, see https://guides.rubyonrails.org/routing.html
 end
