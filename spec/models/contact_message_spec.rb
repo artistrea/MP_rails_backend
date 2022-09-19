@@ -10,7 +10,7 @@ RSpec.describe ContactMessage, type: :model do
 
   context 'when it has no message' do
     it 'invalidates record' do
-      contact_message = build(:contact_message)
+      contact_message = build(:contact_message, message: "")
       expect(contact_message).to_not be_valid
     end
   end
