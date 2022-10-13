@@ -1,7 +1,6 @@
 # README
 
-This README would normally document whatever steps are necessary to get the
-application up and running.
+This was made for a university class project.
 
 dbdiagram: https://dbdiagram.io/d/630fa9240911f91ba50abdef
 
