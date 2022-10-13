@@ -1,6 +1,6 @@
 # README
 
-This was made for a university class project. It is a rails rest api backend.
+This was made for a university class project. It is a rails backend.
 
 dbdiagram: https://dbdiagram.io/d/630fa9240911f91ba50abdef
 
